@@ -1,38 +1,42 @@
-# Class Recommendation System
-This is a Flask-based API for a class recommendation system. The system takes in a description of a product or service and recommends classes that the product or service may belong to.
-
+# Flask API for OpenAI Trademark Class Recommender
+This is a Flask API that uses OpenAI's GPT-3 language model to generate trademark class recommendations for a given product or service description.
 
 ## Installation
-To use the API, you will need to have Python 3 installed. You can then install the required Python packages by running:
+To use the API, you will need to have Python 3 installed, as well as the flask and openai Python packages. You can install these packages using pip:
 
-`pip install -r requirements.txt`
+`pip install flask openai`
+You will also need an OpenAI API key, which you can obtain from the OpenAI website.
+Place it on line 5 on `app_using_openAI_api.py`
 
 ## Usage
-
-`python train1.py`
-
-To run the API, you can use the following command:
-
-`python app.py`
-
-This will start the API server on port 8001. You can then send a POST request to the /recommend endpoint with a JSON payload containing a description field with the product or service description. The API will respond with a JSON payload containing a list of recommended classes and their corresponding cosine similarity scores.
-
-Here's an example of how to use the API with Python:
+To use the API, you can start the Flask app using the following command:
 
 ```
-import requests
-url = 'http://localhost:8001/recommend'
-data = {'description': 'Computer hardware, namely, electronic components'}
-response = requests.post(url, json=data)
-recommendations = response.json()['recommendations']
-for recommendation in recommendations:
-    print(f'Class ID: {recommendation[0]}, Probability: {recommendation[1]:.2%}')
+python app_using_openAI_api.py
+```
+This will start the app and make it available at http://localhost:8001.
+
+To receive trademark class recommendations for a given product or service description, you can send a POST request to the /recommend endpoint with a JSON payload containing a description field, like so:
+
+
+```POST /recommend HTTP/1.1
+Host: localhost:8001
+Content-Type: application/json
+
+{
+    "description": "A device for cleaning floors"
+}
+```
+This will generate trademark class recommendations for the given description using OpenAI's GPT-3 language model. The recommended classes will be returned as a JSON response:
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "recommended_classes": "Class 7: Machines and Machine Tools, Class 11: Environmental Control Apparatus, Class 21: Housewares and Glass, Class 35: Advertising and Business"
+}
 ```
 
-
-
-
-
-
-
-
+## Acknowledgments
+This project was created using the OpenAI API, which provides access to GPT-3 language models, and the Flask web framework.
